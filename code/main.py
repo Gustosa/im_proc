@@ -4,22 +4,14 @@ import filters
 
 def main():
     # Exemplo de uma soma de matrizes
-    img_utfpr = cv.imread("images/utfpr.png")
-    img_green = cv.imread("images/green_bg.png")
+    imgUtfpr = cv.imread("images/utfpr.png")
+    imgGreen = cv.imread("images/green_bg.png")
 
-    cv.imshow("utfpr", img_utfpr)
-    cv.imshow("green", img_green)
-
-    rows, cols, channels = img_utfpr.shape
-    merge = np.zeros((rows, cols, channels), np.uint8)
-
-    for i in range(0, rows):
-        for j in range (0, cols):
-            cv.add(img_utfpr[i, j], img_green[i, j], merge[i, j])
+    summedImages = filters.addImages(imgUtfpr, imgGreen)
     
-    cv.imshow("utfpr logo", img_utfpr)
-    cv.imshow("green", img_green)
-    cv.imshow("merge", merge)
+    cv.imshow("utfpr logo", imgUtfpr)
+    cv.imshow("green", imgGreen)
+    cv.imshow("sum", summedImages)
 
     cv.waitKey(0)
     cv.destroyAllWindows()

@@ -1,6 +1,16 @@
 import cv2 as cv
 import numpy as np
 
+def addImages(src1, src2):
+    rows, cols, channels = src1.shape
+    sum = np.zeros((rows, cols, channels), np.uint8)
+
+    for i in range(0, rows):
+        for j in range (0, cols):
+            cv.add(src1[i,j], src2[i,j], sum[i,j])
+    
+    return sum
+
 def grayscaleBGR(src):
     conversion = np.array([0.2989, 0.5870, 0.1140])
 
@@ -27,22 +37,22 @@ def gaussianBlurBGR(src):
     
     filteredImg = src.copy()
 
-    rows, cols = src.shape[:2]
+    rows, cols = filteredImg.shape[:2]
     for i in range(1, rows-1, 1):
         for j in range(1, cols-1, 1):
-            pixels = filteredImg[i-1:i+2, j-1:j+2]
-            anchor = applyGaussian(pixels, kernel)
-            filteredImg[i,j] = anchor
+            region = filteredImg[i-1:i+2, j-1:j+2]
+            centerPixel = applyGaussian(region, kernel)
+            filteredImg[i,j] = centerPixel
     
     return filteredImg
             
-def applyGaussian(pixels, kernel):
+def applyGaussian(region, kernel):
     anchorValue = 0
 
-    rows, cols = pixels.shape[:2]
+    rows, cols = region.shape[:2]
     for i in range(0, rows):
         for j in range(0, cols):
-            anchorValue += pixels[i,j] * kernel[i,j]
+            anchorValue += region[i,j] * kernel[i,j]
     
     return anchorValue
 
